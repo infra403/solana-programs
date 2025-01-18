@@ -12,7 +12,7 @@ message PbTransferWithSeed {
   required string from_owner = 3;
 }
 
-message Arg {
+message SystemPrograpTransferOnlyArg {
   required string instruction_type = 1;
   optional PbTransfer transfer = 2;
   optional PbTransferWithSeed transferWithSeed = 3;
@@ -24,7 +24,7 @@ message InputAccounts {
   optional string base_account = 3;
 }
 
-message Meta {
+message SystemPrograpTransferOnlyMeta {
   required string block_date = 1;
   required int64 block_time = 2;
   required string tx_id = 3;
@@ -36,10 +36,10 @@ message Meta {
   required uint32 inner_instruction_index = 9;
   required string instruction_type = 10;
   required string outer_program = 11;
-  required Arg args = 12;
+  required SystemPrograpTransferOnlyArg args = 12;
   required InputAccounts input_accounts = 13;
 }
 
-message Output {
-  repeated Meta data = 1;
+message SystemPrograpTransferOnlyOutput {
+  repeated SystemPrograpTransferOnlyMeta data = 1;
 }

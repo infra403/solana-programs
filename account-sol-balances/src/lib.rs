@@ -1,9 +1,9 @@
-mod pb;
+pub mod pb;
 mod utils;
 
 use std::collections::HashMap;
 
-use pb::sf::solana::account_sol_balance::v1::{AccountStats, Output};
+use pb::sf::solana::account_sol_balance::v1::{SolAccountStats, SolOutput};
 use substreams_solana::pb::sf::solana::r#type::v1::{
     Block, ConfirmedTransaction, TransactionStatusMeta,
 };
@@ -11,8 +11,7 @@ use utils::convert_to_date;
 
 const VOTE_ACCOUNT: &str = "Vote111111111111111111111111111111111111111";
 
-#[substreams::handlers::map]
-fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
+pub fn map_block(block: Block) -> Result<SolOutput, substreams::errors::Error> {
     
     let block_slot = block.slot;
 
@@ -25,7 +24,7 @@ fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
     };
 
 
-    let mut latest_stats: HashMap<(String), AccountStats> = HashMap::new();
+    let mut latest_stats: HashMap<(String), SolAccountStats> = HashMap::new();
 
     for trx in block.transactions.iter() {
         let meta = match trx.meta.as_ref() {
@@ -43,7 +42,7 @@ fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
 
     }
 
-    Ok(Output {
+    Ok(SolOutput {
         data: latest_stats.into_values().collect(),
     })
 }
@@ -60,7 +59,7 @@ fn transaction_contains_vote_account(
 }
 
 fn update_latest_stats(
-    latest_stats: &mut HashMap<String, AccountStats>,
+    latest_stats: &mut HashMap<String, SolAccountStats>,
     meta: &TransactionStatusMeta,
     accounts: &[String],
     block_slot: u64,
@@ -75,7 +74,7 @@ fn update_latest_stats(
             latest_stats
                 .entry(account.clone())
                 .and_modify(|stats| stats.post_balance = post_balance.clone())
-                .or_insert_with(|| AccountStats {
+                .or_insert_with(|| SolAccountStats {
                     block_slot: block_slot.clone(),
                     block_date: block_date.to_string(),
                     account: account.clone(),

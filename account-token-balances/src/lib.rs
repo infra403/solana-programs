@@ -1,7 +1,10 @@
-mod pb;
+pub mod pb;
 mod utils;
 
 use std::collections::HashMap;
+use account_sol_balances;
+use substreams_solana_system_program_transfers_only;
+use spl_token;
 
 use pb::sf::solana::account_balance::v1::{AccountStats, Output};
 use substreams_solana::pb::sf::solana::r#type::v1::{Block, TransactionStatusMeta};
@@ -9,7 +12,7 @@ use utils::convert_to_date;
 
 
 #[substreams::handlers::map]
-fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
+pub fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
     let block_slot = block.slot;
 
     let block_date = match block.block_time.as_ref() {
@@ -18,6 +21,28 @@ fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
             Err(_) => "Error converting block time to date".to_string(),
         },
         None => "Block time is not available".to_string(),
+    };
+
+    let account_block = block.clone();
+    let account_sol_block = block.clone();
+    let system_program_transfer_block = block.clone();
+    let account_sol_balances_result = account_sol_balances::map_block(account_block);
+
+    let (account_sol_balances, account_sol_balances_error) = match account_sol_balances_result {
+        Ok(output) => (Some(output), None), // 成功时，output 不为空
+        Err(error) => (None, Some(error)), // 失败时，error 不为空
+    };
+
+    let spl_transfer_result = spl_token::map_block(account_sol_block);
+    let (spl_transfer, spl_transfer_error) = match spl_transfer_result {
+        Ok(output) => (Some(output), None), // 成功时，output 不为空
+        Err(error) => (None, Some(error)), // 失败时，error 不为空
+    };
+
+    let system_program_transfers_only_result = substreams_solana_system_program_transfers_only::map_block(system_program_transfer_block);
+    let (system_program_transfers_only, system_program_transfers_only_error) = match system_program_transfers_only_result {
+        Ok(output) => (Some(output), None), // 成功时，output 不为空
+        Err(error) => (None, Some(error)), // 失败时，error 不为空
     };
 
 
@@ -35,14 +60,13 @@ fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
 
         let accounts = trx.resolved_accounts_as_strings();
         update_latest_stats(&mut latest_stats, meta, &accounts, block_slot, &block_date);
-
-
     }
 
-    
-
     Ok(Output {
-        data: latest_stats.into_values().collect(),
+        token_balances: latest_stats.into_values().collect(),
+        sol_balances: account_sol_balances.unwrap().data,
+        spl_token_transfer: spl_transfer.unwrap().data,
+        system_transfers: system_program_transfers_only.unwrap().data,
     })
 }
 

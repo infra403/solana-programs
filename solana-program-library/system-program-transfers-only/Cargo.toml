@@ -1,11 +1,11 @@
 [package]
-name = "substreams-solana-system-program-transfers-only"
+name = "substreams_solana_system_program_transfers_only"
 version = "1.0.0"
 edition = "2021"
 
 [lib]
-name = "substreams"
-crate-type = ["cdylib"]
+name = "substreams_solana_system_program_transfers_only"
+crate-type = ["rlib"]
 
 [dependencies]
 substreams = "^0.5.0"

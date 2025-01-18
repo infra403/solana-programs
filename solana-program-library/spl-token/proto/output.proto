@@ -2,7 +2,7 @@ syntax = "proto2";
 
 package sf.solana.spl.v1;
 
-message Output {
+message SplTokenOutput {
   repeated SplTokenMeta data = 1;
 }
 
@@ -16,12 +16,12 @@ message SplTokenMeta {
   required bool is_inner_instruction = 7;
   required uint32 inner_instruction_index = 8;
   required string instruction_type = 9;
-  required Accounts input_accounts = 10;
-  required Arg args = 11;
+  required SplTokenAccounts input_accounts = 10;
+  required SplTokenArg args = 11;
   required string outer_program = 12;
 }
 
-message Accounts {
+message SplTokenAccounts {
   optional string mint = 1;
   optional string rent_sysvar = 2;
   optional string account = 3;
@@ -37,7 +37,7 @@ message Accounts {
   optional string mint_funding_sys_program = 13;
 }
 
-message Arg {
+message SplTokenArg {
   optional uint64 amount = 1;
   optional string authority_type = 2;
   optional string freeze_authority = 3;

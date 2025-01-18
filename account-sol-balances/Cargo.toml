@@ -1,11 +1,11 @@
 [package]
-name = "substreams-solana-transactions-stats"
+name = "account_sol_balances"
 version = "1.0.0"
 edition = "2021"
 
 [lib]
-name = "substreams"
-crate-type = ["cdylib"]
+name = "account_sol_balances"
+crate-type = ["rlib"]
 
 [dependencies]
 substreams = "^0.5.0"

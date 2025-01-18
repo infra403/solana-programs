@@ -4,11 +4,11 @@
 
 mod constants;
 mod instruction;
-mod pb;
+pub mod pb;
 mod utils;
 
 use instruction::{parse_instruction, Instruction};
-use pb::sf::solana::spl::v1::{Accounts, Arg, Output, SplTokenMeta};
+use pb::sf::solana::spl::v1::{SplTokenAccounts, SplTokenArg, SplTokenOutput, SplTokenMeta};
 use substreams::log;
 use substreams_solana::pb::sf::solana::r#type::v1::Block;
 use substreams_solana::pb::sf::solana::r#type::v1::TokenBalance;
@@ -17,12 +17,11 @@ use utils::convert_to_date;
 #[derive(Default)]
 pub struct OuterArg {
     pub instruction_type: String,
-    pub input_accounts: Accounts,
-    pub arg: Arg,
+    pub input_accounts: SplTokenAccounts,
+    pub arg: SplTokenArg,
 }
 
-#[substreams::handlers::map]
-fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
+pub fn map_block(block: Block) -> Result<SplTokenOutput, substreams::errors::Error> {
     let slot = block.slot;
     let parent_slot = block.parent_slot;
     let timestamp = block.block_time.as_ref().unwrap().timestamp;
@@ -98,7 +97,7 @@ fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
         }
     }
 
-    Ok(Output { data })
+    Ok(SplTokenOutput { data })
 }
 
 fn handle_mints(
@@ -128,10 +127,10 @@ fn get_outer_arg(
 ) -> OuterArg {
     let account_args = prepare_account_args(account_indices, accounts);
     let mut outerArg: OuterArg = OuterArg::default();
-    let mut arg: Arg = Arg::default();
+    let mut arg: SplTokenArg = SplTokenArg::default();
     let instruction: Instruction = parse_instruction(instruction_data, account_args);
 
-    outerArg.input_accounts = Accounts {
+    outerArg.input_accounts = SplTokenAccounts {
         mint: Some(instruction.instruction_accounts.mint),
         rent_sysvar: Some(instruction.instruction_accounts.rent_sysvar),
         account: Some(instruction.instruction_accounts.account),

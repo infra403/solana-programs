@@ -2,11 +2,11 @@ syntax = "proto2";
 
 package sf.solana.account_sol_balance.v1;
 
-message Output {
-  repeated AccountStats data = 1;
+message SolOutput {
+  repeated SolAccountStats data = 1;
 }
 
-message AccountStats {
+message SolAccountStats {
   required uint64 block_slot = 1;
   required string block_date = 2;
   required string account = 3;

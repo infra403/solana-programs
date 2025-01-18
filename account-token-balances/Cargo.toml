@@ -1,5 +1,5 @@
 [package]
-name = "substreams-solana-transactions-stats"
+name = "substreams-solana-token-balances"
 version = "1.0.0"
 edition = "2021"
 
@@ -10,6 +10,9 @@ crate-type = ["cdylib"]
 [dependencies]
 substreams = "^0.5.0"
 substreams-solana = { git = "https://github.com/streamingfast/substreams-solana", branch = "master" }
+account_sol_balances = { path = "../account-sol-balances" }
+spl_token = { path = "../solana-program-library/spl-token" }
+substreams_solana_system_program_transfers_only= { path = "../solana-program-library/system-program-transfers-only" }
 prost = "0.11"
 num-bigint = "0.4"
 bs58 = "0.5.0"

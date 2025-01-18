@@ -3,6 +3,22 @@
 version = 3
 
 [[package]]
+name = "account_sol_balances"
+version = "1.0.0"
+dependencies = [
+ "borsh",
+ "bs58 0.5.0",
+ "chrono",
+ "num-bigint",
+ "prost",
+ "regex",
+ "serde",
+ "serde_json",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "ahash"
 version = "0.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -34,6 +50,12 @@ name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
+
+[[package]]
+name = "base64"
+version = "0.21.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9d297deb1925b89f2ccc13d7635fa0714f12c87adce1c75356b39ca9b7178567"
 
 [[package]]
 name = "bigdecimal"
@@ -542,6 +564,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "spl_token"
+version = "1.0.0"
+dependencies = [
+ "borsh",
+ "bs58 0.5.0",
+ "bytes",
+ "chrono",
+ "num-bigint",
+ "prost",
+ "serde",
+ "serde_json",
+ "substreams",
+ "substreams-solana",
+ "substreams-solana-program-instructions",
+]
+
+[[package]]
 name = "substreams"
 version = "0.5.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -606,9 +645,21 @@ dependencies = [
 ]
 
 [[package]]
-name = "substreams-solana-transactions-stats"
+name = "substreams-solana-program-instructions"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b2d2eac3fee28a079bd3af5573bb6d43cf9667d89ce577fc7dd40113bb31e9e1"
+dependencies = [
+ "anyhow",
+ "num_enum",
+ "substreams",
+]
+
+[[package]]
+name = "substreams-solana-token-balances"
 version = "1.0.0"
 dependencies = [
+ "account_sol_balances",
  "borsh",
  "bs58 0.5.0",
  "chrono",
@@ -617,8 +668,26 @@ dependencies = [
  "regex",
  "serde",
  "serde_json",
+ "spl_token",
  "substreams",
  "substreams-solana",
+ "substreams_solana_system_program_transfers_only",
+]
+
+[[package]]
+name = "substreams_solana_system_program_transfers_only"
+version = "1.0.0"
+dependencies = [
+ "base64",
+ "borsh",
+ "bs58 0.5.0",
+ "bytes",
+ "chrono",
+ "num-bigint",
+ "prost",
+ "substreams",
+ "substreams-solana",
+ "substreams-solana-program-instructions",
 ]
 
 [[package]]

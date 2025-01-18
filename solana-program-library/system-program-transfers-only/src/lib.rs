@@ -4,25 +4,24 @@
 
 mod constants;
 mod instructions;
-mod pb;
+pub mod pb;
 mod prepare_arg;
 mod prepare_input_accounts;
 mod utils;
 
-use pb::sf::solana::block_meta::v1::{Arg, Meta, Output};
+use pb::sf::solana::block_meta::v1::{SystemPrograpTransferOnlyArg, SystemPrograpTransferOnlyMeta, SystemPrograpTransferOnlyOutput};
 use prepare_arg::prepare_arg;
 use prepare_input_accounts::prepare_input_accounts;
 use substreams::log;
 use substreams_solana::pb::sf::solana::r#type::v1::Block;
 use utils::convert_to_date;
 
-#[substreams::handlers::map]
-fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
+pub fn map_block(block: Block) -> Result<SystemPrograpTransferOnlyOutput, substreams::errors::Error> {
     let slot = block.slot;
     let parent_slot = block.parent_slot;
     let timestamp = block.block_time.as_ref().unwrap().timestamp;
 
-    let mut data: Vec<Meta> = vec![];
+    let mut data: Vec<SystemPrograpTransferOnlyMeta> = vec![];
 
     for trx in block.transactions_owned() {
         let accounts = trx.resolved_accounts_as_strings();
@@ -35,7 +34,7 @@ fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
                 let tx_id = bs58::encode(&transaction.signatures[0]).into_string();
                 let parsed_arg_data = get_arg(program, inst.data, tx_id.clone());
                 if parsed_arg_data.is_some() {
-                    let mut meta: Meta = Meta::default();
+                    let mut meta: SystemPrograpTransferOnlyMeta = SystemPrograpTransferOnlyMeta::default();
                     meta.args = parsed_arg_data.unwrap();
                     meta.instruction_type = meta.args.instruction_type.clone();
                     meta.input_accounts = prepare_input_accounts(
@@ -67,7 +66,7 @@ fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
                                 let parsed_arg_data =
                                     get_arg(inner_program, inner_inst.data.clone(), tx_id.clone());
                                 if parsed_arg_data.is_some() {
-                                    let mut meta: Meta = Meta::default();
+                                    let mut meta: SystemPrograpTransferOnlyMeta = SystemPrograpTransferOnlyMeta::default();
                                     meta.args = parsed_arg_data.unwrap();
                                     meta.instruction_type = meta.args.instruction_type.clone();
                                     meta.input_accounts = prepare_input_accounts(
@@ -96,10 +95,10 @@ fn map_block(block: Block) -> Result<Output, substreams::errors::Error> {
     }
 
     log::info!("{:#?}", slot);
-    Ok(Output { data })
+    Ok(SystemPrograpTransferOnlyOutput { data })
 }
 
-fn get_arg(program: &String, instruction_data: Vec<u8>, tx_id: String) -> Option<Arg> {
+fn get_arg(program: &String, instruction_data: Vec<u8>, tx_id: String) -> Option<SystemPrograpTransferOnlyArg> {
     let mut result = None;
 
     if program.to_string().ne(constants::PROGRAM_ADDRESS) {

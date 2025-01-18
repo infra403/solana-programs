@@ -2,8 +2,20 @@ syntax = "proto2";
 
 package sf.solana.account_balance.v1;
 
-message Output {
-  repeated AccountStats data = 1;
+message TokenAccountOutput {
+  repeated AccountStats token_balances = 1;
+  repeated SolAccountStats sol_balances = 2;
+  repeated SplTokenMeta spl_token_transfer = 3;
+  repeated SystemPrograpTransferOnlyMeta system_transfers = 4;
+}
+
+message TokenAccountStats {
+  required uint64 block_slot = 1;
+  required string block_date = 2;
+  required string token_account = 3;
+  required string owner = 4;
+  required string mint = 5;
+  required double post_balance = 6;
 }
 
 message AccountStats {
@@ -14,3 +26,107 @@ message AccountStats {
   required string mint = 5;
   required double post_balance = 6;
 }
+message SolOutput {
+    repeated SolAccountStats data = 1;
+  }
+
+  message SolAccountStats {
+    required uint64 block_slot = 1;
+    required string block_date = 2;
+    required string account = 3;
+    required uint64 post_balance = 4;
+  }
+
+
+message SplTokenOutput {
+    repeated SplTokenMeta data = 1;
+  }
+
+  message SplTokenMeta {
+    required string block_date = 1;
+    required int64 block_time = 2;
+    required string tx_id = 3;
+    required string dapp = 4;
+    required uint64 block_slot = 5;
+    required uint32 instruction_index = 6;
+    required bool is_inner_instruction = 7;
+    required uint32 inner_instruction_index = 8;
+    required string instruction_type = 9;
+    required SplTokenAccounts input_accounts = 10;
+    required SplTokenArg args = 11;
+    required string outer_program = 12;
+  }
+
+  message SplTokenAccounts {
+    optional string mint = 1;
+    optional string rent_sysvar = 2;
+    optional string account = 3;
+    optional string owner = 4;
+    repeated string signer_accounts = 5;
+    optional string source = 6;
+    optional string destination = 7;
+    optional string delegate = 8;
+    optional string authority = 9;
+    optional string payer = 10;
+    optional string fund_relocation_sys_program = 11;
+    optional string funding_account = 12;
+    optional string mint_funding_sys_program = 13;
+  }
+
+  message SplTokenArg {
+    optional uint64 amount = 1;
+    optional string authority_type = 2;
+    optional string freeze_authority = 3;
+    optional int32 freeze_authority_option = 4;
+    optional string mint_authority = 5;
+    optional string new_authority = 6;
+    optional int32 new_authority_option = 7;
+    optional string owner = 8;
+    optional int32 decimals = 9;
+    optional int32 extension_type = 10;
+    optional string ui_amount = 11;
+    optional int32 status = 12;
+  }
+
+
+message PbTransfer {
+    required uint64 lamports = 1;
+  }
+
+  message PbTransferWithSeed {
+    required uint64 lamports = 1;
+    required string from_seed = 2;
+    required string from_owner = 3;
+  }
+
+  message SystemPrograpTransferOnlyArg {
+    required string instruction_type = 1;
+    optional PbTransfer transfer = 2;
+    optional PbTransferWithSeed transferWithSeed = 3;
+  }
+
+  message InputAccounts {
+    optional string funding_account = 1;
+    optional string recipient_account = 2;
+    optional string base_account = 3;
+  }
+
+  message SystemPrograpTransferOnlyMeta {
+    required string block_date = 1;
+    required int64 block_time = 2;
+    required string tx_id = 3;
+    required string dapp = 4;
+    required uint64 block_slot = 5;
+    required string signer = 6;
+    required uint32 instruction_index = 7;
+    required bool is_inner_instruction = 8;
+    required uint32 inner_instruction_index = 9;
+    required string instruction_type = 10;
+    required string outer_program = 11;
+    required SystemPrograpTransferOnlyArg args = 12;
+    required InputAccounts input_accounts = 13;
+  }
+
+  message SystemPrograpTransferOnlyOutput {
+    repeated SystemPrograpTransferOnlyMeta data = 1;
+  }
