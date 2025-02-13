@@ -25,3 +25,4 @@ modules:
       - map: sol:blocks_without_votes
     output:
       type: proto:sf.solana.account_balance.v1.Output
+network: solana

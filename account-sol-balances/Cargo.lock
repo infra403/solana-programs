@@ -3,6 +3,22 @@
 version = 3
 
 [[package]]
+name = "account_sol_balances"
+version = "1.0.0"
+dependencies = [
+ "borsh",
+ "bs58 0.5.0",
+ "chrono",
+ "num-bigint",
+ "prost",
+ "regex",
+ "serde",
+ "serde_json",
+ "substreams",
+ "substreams-solana",
+]
+
+[[package]]
 name = "ahash"
 version = "0.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -603,22 +619,6 @@ version = "0.11.1"
 source = "git+https://github.com/streamingfast/substreams-solana?branch=master#1f66cc3081f61ad1189dc814cb82096ae5ac4b3b"
 dependencies = [
  "bs58 0.4.0",
-]
-
-[[package]]
-name = "substreams-solana-transactions-stats"
-version = "1.0.0"
-dependencies = [
- "borsh",
- "bs58 0.5.0",
- "chrono",
- "num-bigint",
- "prost",
- "regex",
- "serde",
- "serde_json",
- "substreams",
- "substreams-solana",
 ]
 
 [[package]]

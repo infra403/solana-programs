@@ -541,6 +541,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "spl_token"
+version = "1.0.0"
+dependencies = [
+ "borsh",
+ "bs58 0.5.0",
+ "bytes",
+ "chrono",
+ "num-bigint",
+ "prost",
+ "serde",
+ "serde_json",
+ "substreams",
+ "substreams-solana",
+ "substreams-solana-program-instructions",
+]
+
+[[package]]
 name = "substreams"
 version = "0.5.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -612,23 +629,6 @@ dependencies = [
  "anyhow",
  "num_enum",
  "substreams",
-]
-
-[[package]]
-name = "substreams-solana-spl-token"
-version = "1.0.0"
-dependencies = [
- "borsh",
- "bs58 0.5.0",
- "bytes",
- "chrono",
- "num-bigint",
- "prost",
- "serde",
- "serde_json",
- "substreams",
- "substreams-solana",
- "substreams-solana-program-instructions",
 ]
 
 [[package]]

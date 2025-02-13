@@ -2,7 +2,7 @@ syntax = "proto2";
 
 package sf.solana.account_balance.v1;
 
-message TokenAccountOutput {
+message Output {
   repeated AccountStats token_balances = 1;
   repeated SolAccountStats sol_balances = 2;
   repeated SplTokenMeta spl_token_transfer = 3;
@@ -16,6 +16,7 @@ message TokenAccountStats {
   required string owner = 4;
   required string mint = 5;
   required double post_balance = 6;
+
 }
 
 message AccountStats {
@@ -24,8 +25,13 @@ message AccountStats {
   required string token_account = 3;
   required string owner = 4;
   required string mint = 5;
-  required double post_balance = 6;
+  required uint32 decimals = 6;
+  required double post_balance = 7;
+  required string ui_amount_string = 8;
+  required string transaction = 9;
+  required double pre_balance = 10;
 }
+
 message SolOutput {
     repeated SolAccountStats data = 1;
   }
